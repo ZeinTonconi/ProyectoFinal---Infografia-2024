@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://dd4bw41drq5sj"]
+
+[ext_resource type="PackedScene" uid="uid://bi3xn1sksxo8d" path="res://scences/Rope.tscn" id="1_ylvx1"]
+[ext_resource type="PackedScene" uid="uid://b3yx4k5u7xex6" path="res://scences/player.tscn" id="2_6h1sw"]
+[ext_resource type="Texture2D" uid="uid://bhp33rm7swhio" path="res://assets/Objects/Blue.png" id="3_qxxpj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_warb4"]
+size = Vector2(474, 14)
+
+[node name="Main" type="Node2D"]
+
+[node name="Player1" parent="." instance=ExtResource("2_6h1sw")]
+position = Vector2(52, 108)
+
+[node name="Player2" parent="." instance=ExtResource("2_6h1sw")]
+position = Vector2(144, 109)
+
+[node name="Rope" parent="." instance=ExtResource("1_ylvx1")]
+position = Vector2(96, 112)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(10, 153)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+position = Vector2(226.5, -2.5)
+scale = Vector2(7.39062, 0.234375)
+texture = ExtResource("3_qxxpj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(227, -3)
+shape = SubResource("RectangleShape2D_warb4")
