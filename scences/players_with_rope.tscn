@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://ch11vuksm5y5o"]
+
+[ext_resource type="PackedScene" uid="uid://bi3xn1sksxo8d" path="res://scences/Rope.tscn" id="1_ca4ro"]
+[ext_resource type="Script" path="res://scripts/players_with_rope.gd" id="1_w5kb1"]
+[ext_resource type="PackedScene" uid="uid://b3yx4k5u7xex6" path="res://scences/player.tscn" id="2_3hvd7"]
+
+[node name="PlayersRope" type="Node2D"]
+script = ExtResource("1_w5kb1")
+
+[node name="Rope" parent="." instance=ExtResource("1_ca4ro")]
+
+[node name="PinJoint2DPlayer1" parent="Rope" index="11"]
+node_a = NodePath("../../Player1")
+
+[node name="PinJoint2DPlayer2" parent="Rope" index="12"]
+node_a = NodePath("../../Player2")
+
+[node name="Player1" parent="." instance=ExtResource("2_3hvd7")]
+position = Vector2(-38, -3)
+
+[node name="Player2" parent="." instance=ExtResource("2_3hvd7")]
+position = Vector2(42, -3)
+isPlayer1 = false
+
+[connection signal="pull_player1" from="." to="Player1" method="_on_players_rope_pull_player_1"]
+[connection signal="pull_both_players" from="Rope" to="." method="_on_rope_pull_both_players"]
+
+[editable path="Rope"]
