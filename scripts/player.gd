@@ -8,11 +8,13 @@ var SPEED = 150
 var PULL_SPEED = 150
 var GRAVITY = ProjectSettings.get_setting("physics/2d/default_gravity")
 var JUMP_SPEED = -100
-var MAX_DISTANCE = 50 
+var MAX_DISTANCE = 80 
 var PULL_FORCE = 500
 
 var input_vector
+var is_grabbing_wall = false
 
+signal player_grabbed_wall(is_grabbing: bool)
 
 #func _physics_process(delta: float) -> void:
 	#var right = Input.get_action_strength(input_vector[0]) - Input.get_action_strength(input_vector[1])
@@ -33,7 +35,13 @@ var input_vector
 			#other_character.velocity -= pull_direction * PULL_FORCE * delta
 	#else:
 		#print("other_character no está asignado")
+func _physics_process(delta):
+	player_control.move_player(delta)
 
-func pull_player(dir_vect0r):
-	velocity = PULL_SPEED * dir_vect0r
-	move_and_slide()
+func pull_player(dir_vector):
+	if not is_grabbing_wall:
+		velocity = PULL_SPEED * dir_vector
+		move_and_slide()
+func set_grabbing_wall(grabbing: bool):
+	is_grabbing_wall = grabbing
+	player_grabbed_wall.emit(grabbing)
