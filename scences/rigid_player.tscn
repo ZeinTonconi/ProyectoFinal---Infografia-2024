@@ -25,3 +25,11 @@ target_position = Vector2(0, 8)
 [node name="right_ray_foot" type="RayCast2D" parent="."]
 position = Vector2(20, 32)
 target_position = Vector2(0, 8)
+
+[node name="left_ray_wall" type="RayCast2D" parent="."]
+position = Vector2(-19, 11)
+target_position = Vector2(-17, 0)
+
+[node name="right_ray_wall" type="RayCast2D" parent="."]
+position = Vector2(19, 10)
+target_position = Vector2(17, 0)

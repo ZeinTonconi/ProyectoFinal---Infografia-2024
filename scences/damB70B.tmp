@@ -1,22 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://daxrahlubjrhq"]
+[gd_scene load_steps=3 format=3 uid="uid://daxrahlubjrhq"]
 
 [ext_resource type="PackedScene" uid="uid://b7imrqewnp7hg" path="res://scences/rigid_player.tscn" id="1_3x8vo"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_10k4o"]
-size = Vector2(161, 146.5)
-
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_ypa70"]
 a = Vector2(74, -6)
-b = Vector2(856, -7)
+b = Vector2(398, -10)
 
 [node name="Node2D" type="Node2D"]
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="."]
-position = Vector2(882, 252)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-position = Vector2(49.5, -5.75)
-shape = SubResource("RectangleShape2D_10k4o")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(41, 333)
@@ -27,7 +17,15 @@ shape = SubResource("SegmentShape2D_ypa70")
 [node name="RigidBody2D" parent="." instance=ExtResource("1_3x8vo")]
 position = Vector2(221, 177)
 
-[node name="left_ray_foot" parent="RigidBody2D" index="2"]
+[node name="left_ray_wall" type="RayCast2D" parent="RigidBody2D"]
+position = Vector2(-27, 11)
+target_position = Vector2(-14, 0)
+
+[node name="right_ray_wall" type="RayCast2D" parent="RigidBody2D"]
+position = Vector2(26, 11)
+target_position = Vector2(14, 0)
+
+[node name="left_ray_foot" parent="RigidBody2D" index="4"]
 position = Vector2(-20, 31)
 
 [node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="."]
