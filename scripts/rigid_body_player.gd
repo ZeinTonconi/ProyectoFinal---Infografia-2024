@@ -28,14 +28,14 @@ func _ready() -> void:
 			"Right player 1",
 			"Left player 1",
 			"Up player 1",
-			"Grab wall 1"
+			"Grab wall 1" #P
 		]
 	else:
 		actions = [
 			"Right player 2",
 			"Left player 2",
 			"Up player 2",
-			"Grab wall 2"
+			"Grab wall 2" #Q
 		]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
