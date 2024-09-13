@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dd4bw41drq5sj"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_8kj1k"]
+[ext_resource type="PackedScene" uid="uid://ch11vuksm5y5o" path="res://scences/players_with_rope.tscn" id="2_smbsr"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_5sjc1"]
+a = Vector2(167.5, 8)
+b = Vector2(-305.5, 12)
+
+[node name="Main" type="Node2D"]
+position = Vector2(-1, 218)
+script = ExtResource("1_8kj1k")
+
+[node name="PlayersRope" parent="." instance=ExtResource("2_smbsr")]
+position = Vector2(369, 69)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(6, 249)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(340.5, 0)
+shape = SubResource("SegmentShape2D_5sjc1")
+debug_color = Color(0, 0.646292, 0.240567, 0.42)
