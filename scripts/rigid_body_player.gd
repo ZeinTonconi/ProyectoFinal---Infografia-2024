@@ -1,79 +1,146 @@
 extends RigidBody2D
 
-@export var move_right_force = Vector2(50,0)
-@export var move_left_force = Vector2(-50,0)
-@export var move_speed_max = 10
+@export_category("Movement")
+@export var move_right_force := Vector2(25, 0)
+@export var move_left_force := Vector2(-25, 0)
+@export var move_speed_max := 50.0
+@export var jump_force := Vector2(0, -500)
 
-@export var jump_force = Vector2(0,-500)
-@export var grab_force = 100
-@export var grab_duration = 8.0 #seconds
+@export_category("Wall Grab")
+@export var grab_force := 100.0
+@export var grab_duration := 8.0
+@export var sliding_force := Vector2(0, 20)
 
-@export var isPlayer1 = true
+@export_category("Player")
+@export var isPlayer1 := true
+
 @onready var ray_right_foot: RayCast2D = $right_ray_foot
 @onready var ray_left_foot: RayCast2D = $left_ray_foot
 @onready var left_ray_wall: RayCast2D = $left_ray_wall
 @onready var right_ray_wall: RayCast2D = $right_ray_wall
-@onready var grab_timer: Timer = Timer.new()
+@onready var grab_timer: Timer = $GrabTimer
 
-var actions
-var is_grabbing_wall = false
-var sliding_force = Vector2(0, 20)
-var grab_force_reduction = 0.1 
+var actions := {
+	"right": "",
+	"left": "",
+	"up": "",
+	"grab": ""
+}
+
+var state_machine: StateMachine
+var current_state: State
 
 func _ready() -> void:
-	add_child(grab_timer)
-	grab_timer.one_shot = true  
-	grab_timer.wait_time = grab_duration 
-	
-	if isPlayer1:
-		actions = [
-			"Right player 1",
-			"Left player 1",
-			"Up player 1",
-			"Grab wall 1" #P
-		]
-	else:
-		actions = [
-			"Right player 2",
-			"Left player 2",
-			"Up player 2",
-			"Grab wall 2" #Q
-		]
+	setup_grab_timer()
+	setup_actions()
+	setup_state_machine()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	if is_grabbing_wall:
-		self.linear_velocity = Vector2.ZERO
-		self.angular_velocity = 0
-		self.apply_impulse(Vector2.ZERO, sliding_force * delta)
-		self.mode = RigidBody2D.MODE_STATIC
-		var other_player_path = "/root/Node2D/"
-		if isPlayer1:
-			other_player_path += "RigidBody2D2"
-		else:
-			other_player_path += "RigidBody2D"
-		var other_player = get_node_or_null(other_player_path)
-		if other_player:
-			if not is_grabbing_wall:
-				var direction_to_other = (other_player.position - self.position).normalized()
-				var grab_direction = -direction_to_other * grab_force
-				other_player.apply_impulse(grab_direction, Vector2.ZERO)
-		if not Input.is_action_pressed(actions[3]) or grab_timer.is_stopped():
-			is_grabbing_wall = false
-		return
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	current_state.update(state)
+
+func setup_grab_timer() -> void:
+	if not has_node("GrabTimer"):
+		grab_timer = Timer.new()
+		grab_timer.name = "GrabTimer"
+		add_child(grab_timer)
+	grab_timer.one_shot = true
+	grab_timer.wait_time = grab_duration
+
+func setup_actions() -> void:
+	var player_suffix = "1" if isPlayer1 else "2"
+	actions = {
+		"right": "Right player " + player_suffix,
+		"left": "Left player " + player_suffix,
+		"up": "Up player " + player_suffix,
+		"grab": "Grab wall " + player_suffix
+	}
+
+func setup_state_machine() -> void:
+	state_machine = StateMachine.new(self)
+	state_machine.add_state("normal", NormalState.new())
+	state_machine.add_state("wall_grab", WallGrabState.new())
+	state_machine.set_state("normal")
+	
+#func is_on_floor() -> bool:
+	#return ray_left_foot.is_colliding() or ray_right_foot.is_colliding()
+
+func is_on_wall() -> bool:
+	return left_ray_wall.is_colliding() or right_ray_wall.is_colliding()
+
+class StateMachine:
+	var player: RigidBody2D
+	var states := {}
+	var current_state: State
+
+	func _init(_player: RigidBody2D) -> void:
+		player = _player
+
+	func add_state(name: String, state: State) -> void:
+		states[name] = state
+		state.player = player
+
+	func set_state(name: String) -> void:
+		if current_state:
+			current_state.exit()
+		current_state = states[name]
+		player.current_state = current_state
+		current_state.enter()
+
+class State:
+	var player: RigidBody2D
+
+	func enter() -> void:
+		pass
+
+	func exit() -> void:
+		pass
+
+	func update(state: PhysicsDirectBodyState2D) -> void:
+		pass
+
+class NormalState extends State:
+	func update(state: PhysicsDirectBodyState2D) -> void:
+		handle_movement(state)
+		check_for_wall_grab(state)
+
+	func handle_movement(state: PhysicsDirectBodyState2D) -> void:
+		if abs(state.linear_velocity.x) < 0.1:
+			state.linear_velocity.x = 0
+		if Input.is_action_pressed(player.actions["left"]) and state.linear_velocity.x > -player.move_speed_max:
+			state.apply_central_impulse(player.move_left_force)
+		if Input.is_action_pressed(player.actions["right"]) and state.linear_velocity.x < player.move_speed_max:
+			state.apply_central_impulse(player.move_right_force)
+		if Input.is_action_just_pressed(player.actions["up"]) and (player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding()):
+			state.apply_central_impulse(player.jump_force)
+
+	func check_for_wall_grab(state: PhysicsDirectBodyState2D) -> void:
+		if (player.left_ray_wall.is_colliding() or player.right_ray_wall.is_colliding()) and Input.is_action_just_pressed(player.actions["grab"]):
+			player.state_machine.set_state("wall_grab")
+
+class WallGrabState extends State:
+	var grab_position: Vector2
+
+	func enter() -> void:
+		grab_position = player.global_position
+		player.grab_timer.start()
+
+	func update(state: PhysicsDirectBodyState2D) -> void:
+		if player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding() or not player.is_on_wall():
+			player.state_machine.set_state("normal")
+			return
+		if not player.is_on_wall():
+			player.state_machine.set_state("normal")
+			return
+		state.transform.origin = grab_position
+		state.linear_velocity = Vector2.ZERO
+		state.angular_velocity = 0
 		
-	if Input.is_action_pressed(actions[1]) and self.linear_velocity.x < move_speed_max:
-		self.apply_impulse(move_left_force, Vector2(0,0))
-	if Input.is_action_pressed(actions[0]) and self.linear_velocity.x > -move_speed_max:
-		self.apply_impulse(move_right_force, Vector2(0,0))
-	if Input.is_action_just_pressed(actions[2]) and (ray_left_foot.is_colliding() or ray_right_foot.is_colliding()):
-		self.apply_impulse(jump_force, Vector2(0,0))
-	if (left_ray_wall.is_colliding() or right_ray_wall.is_colliding()) and Input.is_action_just_pressed(actions[3]):
-		grab_wall()
+		grab_position += player.sliding_force * state.step
 		
-func grab_wall() -> void:
-	is_grabbing_wall = true
-	self.linear_velocity = Vector2.ZERO
-	self.angular_velocity = 0
-	grab_timer.start()
-		
+		if not Input.is_action_pressed(player.actions["grab"]) or player.grab_timer.is_stopped():
+			player.state_machine.set_state("normal")
+
+	func exit() -> void:
+		grab_position = Vector2.ZERO
+		player.linear_velocity = Vector2.ZERO
+		player.angular_velocity = 0
