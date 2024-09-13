@@ -26,5 +26,3 @@ length = 100.0
 [node name="RigidBody2D2" parent="." instance=ExtResource("1_3x8vo")]
 position = Vector2(221, 279)
 isPlayer1 = false
-
-[editable path="RigidBody2D"]
