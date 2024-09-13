@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://b7imrqewnp7hg"]
+
+[ext_resource type="Script" path="res://scripts/rigid_body_player.gd" id="1_btjq7"]
+[ext_resource type="Texture2D" uid="uid://bhp33rm7swhio" path="res://assets/Objects/Blue.png" id="2_n2015"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4yvn6"]
+radius = 21.0
+height = 66.0
+
+[node name="RigidBody2D" type="RigidBody2D"]
+lock_rotation = true
+script = ExtResource("1_btjq7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_n2015")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_4yvn6")
+
+[node name="left_ray_foot" type="RayCast2D" parent="."]
+position = Vector2(-20, 32)
+target_position = Vector2(0, 8)
+
+[node name="right_ray_foot" type="RayCast2D" parent="."]
+position = Vector2(20, 32)
+target_position = Vector2(0, 8)

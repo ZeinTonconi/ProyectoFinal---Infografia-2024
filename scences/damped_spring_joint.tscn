@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://daxrahlubjrhq"]
+
+[ext_resource type="PackedScene" uid="uid://b7imrqewnp7hg" path="res://scences/rigid_player.tscn" id="1_3x8vo"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ypa70"]
+a = Vector2(74, -6)
+b = Vector2(398, -10)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(41, 333)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("SegmentShape2D_ypa70")
+
+[node name="RigidBody2D" parent="." instance=ExtResource("1_3x8vo")]
+position = Vector2(221, 177)
+
+[node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="."]
+position = Vector2(220, 178)
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../RigidBody2D2")
+length = 100.0
+
+[node name="RigidBody2D2" parent="." instance=ExtResource("1_3x8vo")]
+position = Vector2(221, 279)
+isPlayer1 = false
+
+[editable path="RigidBody2D"]
