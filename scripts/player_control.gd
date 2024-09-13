@@ -13,6 +13,7 @@ signal do_move_player2(input_vector)
 const ACCELERATION = 500
 const FRICTION = 500
 const MAX_SPEED = 100
+const GRAB_TIME = 10.5 
 
 enum {
 	MOVE,
@@ -78,30 +79,60 @@ var state = MOVE
 var actions
 @export var player_body: CharacterBody2D = null
 
+var is_grabbing_wall = false
+var grab_timer = 0.0
+signal pull_player()
+
 func _ready() -> void:
 	if player_body.isPlayer1:
 		actions = [
 			"Right player 1",
 			"Left player 1",
-			"Up player 1"
+			"Up player 1",
+			"Grab wall 1"
 		]
 	else:
 		actions = [
 			"Right player 2",
 			"Left player 2",
-			"Up player 2"
+			"Up player 2",
+			"Grab wall 2"
 		]
 	
 func _physics_process(delta: float) -> void:
-	move_player(delta)	
+	if is_grabbing_wall:
+		grab_timer -= delta
+		if grab_timer <= 0 or not Input.is_action_pressed(actions[3]):
+			is_grabbing_wall = false
+			player_body.set_grabbing_wall(false)
+		else:
+			player_body.velocity = Vector2.ZERO
+			return 
 
 func move_player(delta: float):
+	if is_grabbing_wall:
+		grab_timer -= delta
+		if grab_timer <= 0 or not Input.is_action_pressed(actions[3]):
+			is_grabbing_wall = false
+			player_body.set_grabbing_wall(false)
+		else:
+			player_body.velocity = Vector2.ZERO
+			return 
 	if state == MOVE:
 		var right = Input.get_action_strength(actions[0]) - Input.get_action_strength(actions[1])
 		player_body.velocity.x = right * SPEED
 		player_body.velocity.y += GRAVITY * delta
 	
 	if Input.is_action_just_pressed(actions[2]) and player_body.is_on_floor():
-		player_body.velocity.y = JUMP_SPEED  
+		player_body.velocity.y = JUMP_SPEED
 		
+	if player_body.is_on_wall() and Input.is_action_just_pressed(actions[3]):
+			grab_wall()
+			
 	player_body.move_and_slide()
+	
+func grab_wall():
+	is_grabbing_wall = true
+	grab_timer = GRAB_TIME
+	player_body.velocity = Vector2.ZERO
+	player_body.set_grabbing_wall(true)
