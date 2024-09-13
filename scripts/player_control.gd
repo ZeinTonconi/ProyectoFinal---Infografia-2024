@@ -17,7 +17,9 @@ const GRAB_TIME = 10.5
 
 enum {
 	MOVE,
-	STOP
+	STOP,
+	GRAB,
+	CROUCH
 }
 
 var state_player1 = MOVE
@@ -89,14 +91,16 @@ func _ready() -> void:
 			"Right player 1",
 			"Left player 1",
 			"Up player 1",
-			"Grab wall 1"
+			"Grab wall 1",
+			"Down player 1",
 		]
 	else:
 		actions = [
 			"Right player 2",
 			"Left player 2",
 			"Up player 2",
-			"Grab wall 2"
+			"Grab wall 2",
+			"Down player 2",
 		]
 	
 func _physics_process(delta: float) -> void:
@@ -129,6 +133,13 @@ func move_player(delta: float):
 	if player_body.is_on_wall() and Input.is_action_just_pressed(actions[3]):
 			grab_wall()
 			
+	if Input.is_action_just_pressed(actions[4]):
+		state = CROUCH
+		
+	if Input.is_action_just_released(actions[4]):
+		state = MOVE
+	print(state)
+	
 	player_body.move_and_slide()
 	
 func grab_wall():

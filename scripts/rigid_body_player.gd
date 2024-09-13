@@ -14,9 +14,18 @@ extends RigidBody2D
 @onready var left_ray_wall: RayCast2D = $left_ray_wall
 @onready var right_ray_wall: RayCast2D = $right_ray_wall
 @onready var grab_timer: Timer = Timer.new()
+@onready var animation_tree: AnimationTree = $AnimationTree
 
 var actions
 var is_grabbing_wall = false
+
+enum {
+	IDLE,
+	MOVE,
+	CROUCH
+}
+
+var state = IDLE
 
 func _ready() -> void:
 	add_child(grab_timer)
@@ -28,14 +37,16 @@ func _ready() -> void:
 			"Right player 1",
 			"Left player 1",
 			"Up player 1",
-			"Grab wall 1" #P
+			"Grab wall 1", #P
+			"Down player 1"
 		]
 	else:
 		actions = [
 			"Right player 2",
 			"Left player 2",
 			"Up player 2",
-			"Grab wall 2" #Q
+			"Grab wall 2", #Q
+			"Down player 2"
 		]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -56,15 +67,26 @@ func _process(delta: float) -> void:
 		if not Input.is_action_pressed(actions[3]) or grab_timer.is_stopped():
 			is_grabbing_wall = false
 		return
-		
-	if Input.is_action_pressed(actions[1]) and self.linear_velocity.x < move_speed_max:
-		self.apply_impulse(move_left_force, Vector2(0,0))
-	if Input.is_action_pressed(actions[0]) and self.linear_velocity.x > -move_speed_max:
-		self.apply_impulse(move_right_force, Vector2(0,0))
-	if Input.is_action_just_pressed(actions[2]) and (ray_left_foot.is_colliding() or ray_right_foot.is_colliding()):
-		self.apply_impulse(jump_force, Vector2(0,0))
-	if (left_ray_wall.is_colliding() or right_ray_wall.is_colliding()) and Input.is_action_just_pressed(actions[3]):
-		grab_wall()
+	if state == MOVE || state == IDLE: 	
+		if Input.is_action_pressed(actions[1]) and self.linear_velocity.x < move_speed_max:
+			self.apply_impulse(move_left_force, Vector2(0,0))
+			
+		if Input.is_action_pressed(actions[0]) and self.linear_velocity.x > -move_speed_max:
+			self.apply_impulse(move_right_force, Vector2(0,0))
+			
+		if Input.is_action_just_pressed(actions[2]) and (ray_left_foot.is_colliding() or ray_right_foot.is_colliding()):
+			self.apply_impulse(jump_force, Vector2(0,0))
+			
+		if (left_ray_wall.is_colliding() or right_ray_wall.is_colliding()) and Input.is_action_just_pressed(actions[3]):
+			grab_wall()
+	
+	if Input.is_action_just_pressed(actions[4]):
+		self.mass = 100
+		state = CROUCH
+	
+	if Input.is_action_just_released(actions[4]):
+		self.mass = 1
+		state = MOVE
 		
 func grab_wall() -> void:
 	is_grabbing_wall = true

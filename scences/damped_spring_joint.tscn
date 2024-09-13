@@ -27,14 +27,12 @@ shape = SubResource("SegmentShape2D_ypa70")
 [node name="RigidBody2D" parent="." instance=ExtResource("1_3x8vo")]
 position = Vector2(221, 177)
 
-[node name="left_ray_foot" parent="RigidBody2D" index="2"]
-position = Vector2(-20, 31)
-
 [node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="."]
 position = Vector2(220, 178)
 node_a = NodePath("../RigidBody2D")
 node_b = NodePath("../RigidBody2D2")
-length = 100.0
+length = 90.0
+stiffness = 64.0
 
 [node name="RigidBody2D2" parent="." instance=ExtResource("1_3x8vo")]
 position = Vector2(221, 279)

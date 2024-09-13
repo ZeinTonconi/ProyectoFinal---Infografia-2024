@@ -42,6 +42,7 @@ func pull_player(dir_vector):
 	if not is_grabbing_wall:
 		velocity = PULL_SPEED * dir_vector
 		move_and_slide()
+		
 func set_grabbing_wall(grabbing: bool):
 	is_grabbing_wall = grabbing
 	player_grabbed_wall.emit(grabbing)
