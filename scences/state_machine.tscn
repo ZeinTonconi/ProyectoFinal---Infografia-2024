@@ -10,17 +10,17 @@
 [node name="StateMachine" type="Node2D"]
 script = ExtResource("1_x882j")
 
-[node name="State" type="Node2D" parent="."]
-script = ExtResource("2_ryail")
-
-[node name="Idle" type="Node2D" parent="State"]
+[node name="Idle" type="Node2D" parent="."]
 script = ExtResource("3_ygte3")
 
-[node name="Move" type="Node2D" parent="State"]
+[node name="Move" type="Node2D" parent="."]
 script = ExtResource("4_mvc00")
 
-[node name="Grab" type="Node2D" parent="State"]
+[node name="Grab" type="Node2D" parent="."]
 script = ExtResource("5_d0eyw")
 
-[node name="Crouch" type="Node2D" parent="State"]
+[node name="Crouch" type="Node2D" parent="."]
 script = ExtResource("5_va8bd")
+
+[node name="State" type="Node2D" parent="."]
+script = ExtResource("2_ryail")

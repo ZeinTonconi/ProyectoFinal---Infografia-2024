@@ -1,13 +1,15 @@
 extends State
 
 func enter() -> void:
-	player.mass = 100
-	player.animation_tree.set("parameters/animation/animation", "Crouch")
+	player.mass = 200
+	player.state_animation.travel("Crouch")
 
 func update(state: PhysicsDirectBodyState2D) -> void:
+	player.state_animation.travel("Crouch")
 	if not Input.is_action_pressed(player.actions["crouch"]):
-		player.state_machine.set_state(MOVE)
+		exit()
+		state_machine.set_state(IDLE)
 
 func exit() -> void:
 	player.mass = 1
-	player.animation_tree.set("parameters/animation/animation", "Idle")
+	player.state_animation.travel("Idle")

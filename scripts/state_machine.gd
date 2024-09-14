@@ -1,12 +1,14 @@
 extends Node2D
 
+class_name StateMachine
+
 var states := {}
 var current_state: State = null
 @onready var state = $State
-@onready var move = $State/Move
-@onready var idle = $State/Idle
-@onready var grab = $State/Grab
-@onready var crouch = $State/Crouch
+@onready var move = $Move
+@onready var idle = $Idle
+@onready var grab = $Grab
+@onready var crouch = $Crouch
 
 @export var player: RigidBody2D = null
 
@@ -32,8 +34,8 @@ func add_state(name: int, state: State) -> void:
 	state.player = player
 
 func set_state(name: int) -> void:
-	if current_state:
-		current_state.exit()
+	#if current_state:
+		#current_state.exit()
 	current_state = states[name]
 	player.current_state = current_state
 	current_state.enter()

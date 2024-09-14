@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b7imrqewnp7hg"]
+[gd_scene load_steps=22 format=3 uid="uid://b7imrqewnp7hg"]
 
 [ext_resource type="Script" path="res://scripts/rigid_body_player.gd" id="1_btjq7"]
 [ext_resource type="Texture2D" uid="uid://cm0i7txdgsal5" path="res://assets/character/atlas.png" id="2_7btjw"]
@@ -114,6 +114,9 @@ _data = {
 "Run": SubResource("Animation_c7370")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pg50v"]
+animation = &"Crouch"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ha403"]
 animation = &"Idle"
 
@@ -127,13 +130,23 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lpi7q"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4o31j"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lh3q1"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2l2wp"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pxjj4"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7hjpp"]
+states/Crouch/node = SubResource("AnimationNodeAnimation_pg50v")
+states/Crouch/position = Vector2(635, 159)
 states/Idle/node = SubResource("AnimationNodeAnimation_ha403")
 states/Idle/position = Vector2(389, 148)
 states/Run/node = SubResource("AnimationNodeAnimation_nxbr0")
-states/Run/position = Vector2(434, 68)
+states/Run/position = Vector2(519, 57)
 states/Start/position = Vector2(203, 149)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_58k8a"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_mjf0w"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_lpi7q")]
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_58k8a"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_mjf0w"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_lpi7q"), "Run", "Crouch", SubResource("AnimationNodeStateMachineTransition_4o31j"), "Crouch", "Run", SubResource("AnimationNodeStateMachineTransition_lh3q1"), "Crouch", "Idle", SubResource("AnimationNodeStateMachineTransition_2l2wp"), "Idle", "Crouch", SubResource("AnimationNodeStateMachineTransition_pxjj4")]
 
 [node name="RigidPlayer" type="RigidBody2D"]
 collision_layer = 2
