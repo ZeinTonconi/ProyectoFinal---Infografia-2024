@@ -10,7 +10,7 @@ height = 32.0
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_gux0e"]
 a = Vector2(12, 0)
-b = Vector2(-12, -1)
+b = Vector2(-12, 0)
 
 [sub_resource type="Animation" id="Animation_2b3w3"]
 resource_name = "Down"
@@ -306,6 +306,7 @@ shape = SubResource("CapsuleShape2D_drcdl")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(-1, -13)
 shape = SubResource("SegmentShape2D_gux0e")
+one_way_collision = true
 debug_color = Color(0, 0.647103, 0.220133, 0.42)
 
 [node name="left_ray_foot" type="RayCast2D" parent="."]
