@@ -3,8 +3,9 @@ extends RigidBody2D
 @export_category("Movement")
 @export var move_right_force := Vector2(50, 0)
 @export var move_left_force := Vector2(-50, 0)
-@export var move_speed_max := 100.0
-@export var jump_force := Vector2(0, -200)
+@export var move_speed_max := 200.0
+@export var jump_force := Vector2(0, -250)
+@export var pull_force = 50
 
 @export_category("Wall Grab")
 @export var grab_force := 100.0
@@ -13,6 +14,7 @@ extends RigidBody2D
 
 @export_category("Player")
 @export var isPlayer1 := true
+@export var other_player: RigidBody2D = null
 
 @onready var ray_right_foot: RayCast2D = $right_ray_foot
 @onready var ray_left_foot: RayCast2D = $left_ray_foot
@@ -28,7 +30,8 @@ var actions := {
 	"left": "",
 	"up": "",
 	"grab": "",
-	"crouch": ""
+	"crouch": "",
+	"pull": ""
 }
 
 var current_state: State
@@ -56,7 +59,8 @@ func setup_actions() -> void:
 		"left": "Left player " + player_suffix,
 		"up": "Up player " + player_suffix,
 		"grab": "Grab wall " + player_suffix,
-		"crouch": "Down player " + player_suffix
+		"crouch": "Down player " + player_suffix,
+		"pull": "Pull player " + player_suffix
 	}
 
 func setup_state_machine() -> void:
@@ -64,3 +68,10 @@ func setup_state_machine() -> void:
 
 func is_on_wall() -> bool:
 	return left_ray_wall.is_colliding() or right_ray_wall.is_colliding()
+
+func pull_other_player():
+	other_player.pull_me(global_position)
+	
+func pull_me(position):
+	var dir = global_position.direction_to(position)
+	apply_central_impulse(dir*pull_force)

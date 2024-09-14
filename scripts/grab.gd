@@ -5,9 +5,11 @@ var grab_position: Vector2
 func enter() -> void:
 	grab_position = player.global_position
 	player.grab_timer.start()
-	player.animation_tree.set("parameters/animation/animation", "Wall Grab")
+	player.state_animation.travel("Grab")
 
 func update(state: PhysicsDirectBodyState2D) -> void:
+	
+	player.state_animation.travel("Grab")
 	if player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding() or not player.is_on_wall():
 		player.state_machine.set_state(IDLE)
 		return
@@ -27,4 +29,4 @@ func exit() -> void:
 	grab_position = Vector2.ZERO
 	player.linear_velocity = Vector2.ZERO
 	player.angular_velocity = 0
-	player.animation_tree.set("parameters/animation/animation", "Idle")
+	player.state_animtaion.travel("Jump")

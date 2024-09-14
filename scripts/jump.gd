@@ -27,6 +27,12 @@ func handle_movement(state: PhysicsDirectBodyState2D) -> void:
 func check_for_wall_grab(state: PhysicsDirectBodyState2D) -> void:
 	if (player.left_ray_wall.is_colliding() or player.right_ray_wall.is_colliding()) and Input.is_action_just_pressed(player.actions["grab"]):
 		state_machine.set_state(WALL_GRAB)
+	else:
+		if player.left_ray_wall.is_colliding():
+			state.linear_velocity.x = max(0, state.linear_velocity.x)
+		if player.right_ray_wall.is_colliding():
+			state.linear_velocity.x = min(0, state.linear_velocity.x)
+	
 
 func animate_movement(state: PhysicsDirectBodyState2D) -> void:
 	player.animation_tree.set("parameters/Jump/blend_position",state.linear_velocity.y)

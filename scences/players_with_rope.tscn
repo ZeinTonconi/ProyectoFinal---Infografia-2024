@@ -9,7 +9,8 @@
 [node name="PlayersRope" type="Node2D"]
 scale = Vector2(0.5, 0.5)
 
-[node name="RigidPlayer" parent="." instance=ExtResource("1_p3unc")]
+[node name="RigidPlayer" parent="." node_paths=PackedStringArray("other_player") instance=ExtResource("1_p3unc")]
+other_player = NodePath("../RigidPlayer2")
 
 [node name="Camera2D" type="Camera2D" parent="RigidPlayer"]
 position = Vector2(200, 26)
@@ -55,9 +56,20 @@ scale = Vector2(2, 2)
 texture = ExtResource("4_wusbb")
 centered = false
 
-[node name="RigidPlayer2" parent="." instance=ExtResource("1_p3unc")]
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="RigidPlayer/Camera2D/ParallaxBackground"]
+motion_scale = Vector2(0.1, 1)
+motion_mirroring = Vector2(768, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidPlayer/Camera2D/ParallaxBackground/ParallaxLayer4"]
+position = Vector2(1, -590)
+scale = Vector2(2, 2)
+texture = ExtResource("4_wusbb")
+centered = false
+
+[node name="RigidPlayer2" parent="." node_paths=PackedStringArray("other_player") instance=ExtResource("1_p3unc")]
 position = Vector2(-1, -100)
 isPlayer1 = false
+other_player = NodePath("../RigidPlayer")
 
 [node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="."]
 position = Vector2(0, -100)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://pgbi547pxmhc"]
+[gd_scene load_steps=9 format=3 uid="uid://pgbi547pxmhc"]
 
 [ext_resource type="Script" path="res://scripts/state_machine.gd" id="1_x882j"]
 [ext_resource type="Script" path="res://scripts/state.gd" id="2_ryail"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/grab.gd" id="5_d0eyw"]
 [ext_resource type="Script" path="res://scripts/crouch.gd" id="5_va8bd"]
 [ext_resource type="Script" path="res://scripts/jump.gd" id="7_h0n76"]
+[ext_resource type="Script" path="res://scripts/pulling.gd" id="8_nre8c"]
 
 [node name="StateMachine" type="Node2D"]
 script = ExtResource("1_x882j")
@@ -28,3 +29,6 @@ script = ExtResource("2_ryail")
 
 [node name="Jump" type="Node2D" parent="."]
 script = ExtResource("7_h0n76")
+
+[node name="Pulling" type="Node2D" parent="."]
+script = ExtResource("8_nre8c")
