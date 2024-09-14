@@ -9,6 +9,7 @@ var current_state: State = null
 @onready var idle = $Idle
 @onready var grab = $Grab
 @onready var crouch = $Crouch
+@onready var jump = $Jump
 
 @export var player: RigidBody2D = null
 
@@ -25,7 +26,10 @@ func init_states():
 	
 	states[state.CROUCH] = crouch
 	crouch.player = player
-	
+
+	states[state.JUMP] = jump
+	jump.player = player
+		
 	set_state(state.IDLE)
 	
 

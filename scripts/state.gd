@@ -8,7 +8,8 @@ enum {
 	IDLE,
 	MOVE,
 	CROUCH,
-	WALL_GRAB
+	WALL_GRAB,
+	JUMP
 }
 
 func enter() -> void:

@@ -4,7 +4,7 @@ extends RigidBody2D
 @export var move_right_force := Vector2(50, 0)
 @export var move_left_force := Vector2(-50, 0)
 @export var move_speed_max := 100.0
-@export var jump_force := Vector2(0, -600)
+@export var jump_force := Vector2(0, -200)
 
 @export_category("Wall Grab")
 @export var grab_force := 100.0

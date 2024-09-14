@@ -7,11 +7,11 @@ func update(state: PhysicsDirectBodyState2D) -> void:
 
 func handle_movement(state: PhysicsDirectBodyState2D) -> void:
 	if Input.is_action_pressed(player.actions["left"]) or Input.is_action_pressed(player.actions["right"]):
-		player.state_machine.set_state(MOVE)
-	if Input.is_action_just_pressed(player.actions["up"]) and (player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding()):
-		#TODO go to JUMP
-		pass
-	if Input.is_action_just_pressed(player.actions["crouch"]):
+		state_machine.set_state(MOVE)
+	if Input.is_action_pressed(player.actions["up"]) and (player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding()):
+		state_machine.set_state(JUMP)
+		
+	if Input.is_action_pressed(player.actions["crouch"]):
 		state_machine.set_state(CROUCH)
 
 func check_for_wall_grab(state: PhysicsDirectBodyState2D) -> void:

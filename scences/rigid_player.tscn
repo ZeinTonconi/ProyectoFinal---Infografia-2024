@@ -1,12 +1,15 @@
-[gd_scene load_steps=22 format=3 uid="uid://b7imrqewnp7hg"]
+[gd_scene load_steps=31 format=3 uid="uid://b7imrqewnp7hg"]
 
 [ext_resource type="Script" path="res://scripts/rigid_body_player.gd" id="1_btjq7"]
 [ext_resource type="Texture2D" uid="uid://cm0i7txdgsal5" path="res://assets/character/atlas.png" id="2_7btjw"]
 [ext_resource type="PackedScene" uid="uid://pgbi547pxmhc" path="res://scences/state_machine.tscn" id="3_opxf1"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4yvn6"]
-radius = 21.0
-height = 46.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_drcdl"]
+radius = 13.0
+height = 32.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1kn82"]
+size = Vector2(24, 5)
 
 [sub_resource type="Animation" id="Animation_2b3w3"]
 resource_name = "Down"
@@ -58,7 +61,32 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_2wisk"]
 resource_name = "Jump"
+length = 0.2
 step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(11, -8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame_coords")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_yujel"]
 length = 0.001
@@ -105,9 +133,39 @@ tracks/0/keys = {
 "values": [Vector2i(10, 1), Vector2i(11, 1), Vector2i(12, 1), Vector2i(13, 1), Vector2i(0, 2)]
 }
 
+[sub_resource type="Animation" id="Animation_66pl7"]
+resource_name = "Fall jump"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame_coords")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1htx0"]
 _data = {
 "Crouch": SubResource("Animation_2b3w3"),
+"Fall jump": SubResource("Animation_66pl7"),
 "Idle": SubResource("Animation_flbl7"),
 "Jump": SubResource("Animation_2wisk"),
 "RESET": SubResource("Animation_yujel"),
@@ -119,6 +177,18 @@ animation = &"Crouch"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ha403"]
 animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_b1vuw"]
+animation = &"Jump"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wx46e"]
+animation = &"Fall jump"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_cixlj"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_b1vuw")
+blend_point_0/pos = -1.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_wx46e")
+blend_point_1/pos = 1.0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nxbr0"]
 animation = &"Run"
@@ -138,15 +208,25 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pxjj4"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kuu0r"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_buylr"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ncikk"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4qxx8"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7hjpp"]
 states/Crouch/node = SubResource("AnimationNodeAnimation_pg50v")
-states/Crouch/position = Vector2(635, 159)
+states/Crouch/position = Vector2(310, 38)
 states/Idle/node = SubResource("AnimationNodeAnimation_ha403")
 states/Idle/position = Vector2(389, 148)
+states/Jump/node = SubResource("AnimationNodeBlendSpace1D_cixlj")
+states/Jump/position = Vector2(672, 169)
 states/Run/node = SubResource("AnimationNodeAnimation_nxbr0")
 states/Run/position = Vector2(519, 57)
 states/Start/position = Vector2(203, 149)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_58k8a"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_mjf0w"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_lpi7q"), "Run", "Crouch", SubResource("AnimationNodeStateMachineTransition_4o31j"), "Crouch", "Run", SubResource("AnimationNodeStateMachineTransition_lh3q1"), "Crouch", "Idle", SubResource("AnimationNodeStateMachineTransition_2l2wp"), "Idle", "Crouch", SubResource("AnimationNodeStateMachineTransition_pxjj4")]
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_58k8a"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_mjf0w"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_lpi7q"), "Run", "Crouch", SubResource("AnimationNodeStateMachineTransition_4o31j"), "Crouch", "Run", SubResource("AnimationNodeStateMachineTransition_lh3q1"), "Crouch", "Idle", SubResource("AnimationNodeStateMachineTransition_2l2wp"), "Idle", "Crouch", SubResource("AnimationNodeStateMachineTransition_pxjj4"), "Run", "Jump", SubResource("AnimationNodeStateMachineTransition_kuu0r"), "Jump", "Idle", SubResource("AnimationNodeStateMachineTransition_buylr"), "Jump", "Run", SubResource("AnimationNodeStateMachineTransition_ncikk"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_4qxx8")]
 
 [node name="RigidPlayer" type="RigidBody2D"]
 collision_layer = 2
@@ -161,7 +241,15 @@ vframes = 4
 frame = 23
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_4yvn6")
+position = Vector2(-3, 7)
+shape = SubResource("CapsuleShape2D_drcdl")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-1, -13)
+shape = SubResource("RectangleShape2D_1kn82")
+debug_color = Color(0, 0.647103, 0.220133, 0.42)
 
 [node name="left_ray_foot" type="RayCast2D" parent="."]
 position = Vector2(-12, 19)
@@ -187,6 +275,7 @@ libraries = {
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_7hjpp")
 anim_player = NodePath("../AnimationPlayer")
+parameters/Jump/blend_position = 1.10065
 
 [node name="StateMachine" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_opxf1")]
 player = NodePath("..")
