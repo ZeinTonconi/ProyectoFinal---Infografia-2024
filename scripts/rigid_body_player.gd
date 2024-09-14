@@ -1,10 +1,10 @@
 extends RigidBody2D
 
 @export_category("Movement")
-@export var move_right_force := Vector2(25, 0)
-@export var move_left_force := Vector2(-25, 0)
-@export var move_speed_max := 50.0
-@export var jump_force := Vector2(0, -500)
+@export var move_right_force := Vector2(50, 0)
+@export var move_left_force := Vector2(-50, 0)
+@export var move_speed_max := 100.0
+@export var jump_force := Vector2(0, -600)
 
 @export_category("Wall Grab")
 @export var grab_force := 100.0
@@ -20,6 +20,7 @@ extends RigidBody2D
 @onready var right_ray_wall: RayCast2D = $right_ray_wall
 @onready var grab_timer: Timer = $GrabTimer
 @onready var animation_tree: AnimationTree = $AnimationTree
+@onready var state_animation = $AnimationTree.get("parameters/playback")
 
 var actions := {
 	"right": "",
@@ -119,6 +120,7 @@ class IdleState extends State:
 			state.apply_central_impulse(player.move_left_force)
 		if Input.is_action_pressed(player.actions["right"]) and state.linear_velocity.x < player.move_speed_max:
 			state.apply_central_impulse(player.move_right_force)
+			player.state_machine.set_state(MOVE)
 		if Input.is_action_just_pressed(player.actions["up"]) and (player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding()):
 			state.apply_central_impulse(player.jump_force)
 
@@ -134,11 +136,11 @@ class MoveState extends IdleState:
 
 	func animate_movement(state: PhysicsDirectBodyState2D) -> void:
 		if state.linear_velocity.x > 0:
-			player.animation_tree.set("parameters/animation/animation", "Run Right")
+			player.state_animation.travel("Run")
 		elif state.linear_velocity.x < 0:
-			player.animation_tree.set("parameters/animation/animation", "Run Left")
+			player.state_animation.travel("Run")
 		else:
-			player.animation_tree.set("parameters/animation/animation", "Idle")
+			player.state_animation.travel("Idle")
 
 class CrouchState extends State:
 	func enter() -> void:

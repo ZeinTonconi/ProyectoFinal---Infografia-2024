@@ -1,11 +1,59 @@
-[gd_scene load_steps=3 format=3 uid="uid://ch11vuksm5y5o"]
+[gd_scene load_steps=6 format=3 uid="uid://ch11vuksm5y5o"]
 
 [ext_resource type="PackedScene" uid="uid://bi3xn1sksxo8d" path="res://scences/Rope.tscn" id="1_ca4ro"]
 [ext_resource type="PackedScene" uid="uid://b7imrqewnp7hg" path="res://scences/rigid_player.tscn" id="1_p3unc"]
+[ext_resource type="Texture2D" uid="uid://0hcpk4afdemi" path="res://assets/Background/Background.png" id="2_8ccma"]
+[ext_resource type="Texture2D" uid="uid://bs3m4p7uspmgw" path="res://assets/Background/Middleground.png" id="3_1j7jy"]
+[ext_resource type="Texture2D" uid="uid://cc44xoswro4ny" path="res://assets/Background/Extension_blue.png" id="4_wusbb"]
 
 [node name="PlayersRope" type="Node2D"]
+scale = Vector2(0.5, 0.5)
 
 [node name="RigidPlayer" parent="." instance=ExtResource("1_p3unc")]
+
+[node name="Camera2D" type="Camera2D" parent="RigidPlayer"]
+position = Vector2(200, 26)
+zoom = Vector2(1.5, 1.5)
+limit_left = 1
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.3
+drag_top_margin = 0.3
+drag_right_margin = 0.3
+drag_bottom_margin = 0.04
+editor_draw_drag_margin = true
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="RigidPlayer/Camera2D"]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="RigidPlayer/Camera2D/ParallaxBackground"]
+motion_scale = Vector2(0.1, 1)
+motion_mirroring = Vector2(768, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidPlayer/Camera2D/ParallaxBackground/ParallaxLayer"]
+position = Vector2(1, 271)
+scale = Vector2(2, 2)
+texture = ExtResource("2_8ccma")
+centered = false
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="RigidPlayer/Camera2D/ParallaxBackground"]
+motion_scale = Vector2(0.4, 1)
+motion_mirroring = Vector2(768, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidPlayer/Camera2D/ParallaxBackground/ParallaxLayer2"]
+position = Vector2(3, 271)
+scale = Vector2(2, 2)
+texture = ExtResource("3_1j7jy")
+centered = false
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="RigidPlayer/Camera2D/ParallaxBackground"]
+motion_scale = Vector2(0.1, 1)
+motion_mirroring = Vector2(768, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidPlayer/Camera2D/ParallaxBackground/ParallaxLayer3"]
+position = Vector2(-3, -160)
+scale = Vector2(2, 2)
+texture = ExtResource("4_wusbb")
+centered = false
 
 [node name="RigidPlayer2" parent="." instance=ExtResource("1_p3unc")]
 position = Vector2(-1, -100)

@@ -1,13 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://b7imrqewnp7hg"]
+[gd_scene load_steps=16 format=3 uid="uid://b7imrqewnp7hg"]
 
 [ext_resource type="Script" path="res://scripts/rigid_body_player.gd" id="1_btjq7"]
 [ext_resource type="Texture2D" uid="uid://cm0i7txdgsal5" path="res://assets/character/atlas.png" id="2_7btjw"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4yvn6"]
 radius = 21.0
-height = 66.0
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_3lnip"]
+height = 46.0
 
 [sub_resource type="Animation" id="Animation_2b3w3"]
 resource_name = "Down"
@@ -39,10 +37,10 @@ tracks/0/path = NodePath("Sprite2D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0.154339, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2i(13, 0), Vector2i(3, 1), Vector2i(9, 1), Vector2i(10, 1)]
+"values": [Vector2i(3, 1), Vector2i(9, 1), Vector2i(10, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -51,10 +49,10 @@ tracks/1/path = NodePath("Sprite2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.1, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(12, -3), Vector2(4, -2), Vector2(5, -2.5)]
+"values": [Vector2(0, 0), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_2wisk"]
@@ -85,7 +83,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(12, -3)]
+"values": [Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_c7370"]
@@ -115,13 +113,33 @@ _data = {
 "Run": SubResource("Animation_c7370")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ha403"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nxbr0"]
+animation = &"Run"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_58k8a"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mjf0w"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lpi7q"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7hjpp"]
+states/Idle/node = SubResource("AnimationNodeAnimation_ha403")
+states/Idle/position = Vector2(389, 148)
+states/Run/node = SubResource("AnimationNodeAnimation_nxbr0")
+states/Run/position = Vector2(434, 68)
+states/Start/position = Vector2(203, 149)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_58k8a"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_mjf0w"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_lpi7q")]
+
 [node name="RigidPlayer" type="RigidBody2D"]
 collision_layer = 2
 lock_rotation = true
 script = ExtResource("1_btjq7")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(12, -3)
 scale = Vector2(2, 2)
 texture = ExtResource("2_7btjw")
 hframes = 14
@@ -132,11 +150,11 @@ frame = 23
 shape = SubResource("CapsuleShape2D_4yvn6")
 
 [node name="left_ray_foot" type="RayCast2D" parent="."]
-position = Vector2(-20, 32)
+position = Vector2(-12, 19)
 target_position = Vector2(0, 8)
 
 [node name="right_ray_foot" type="RayCast2D" parent="."]
-position = Vector2(20, 32)
+position = Vector2(9, 21)
 target_position = Vector2(0, 8)
 
 [node name="left_ray_wall" type="RayCast2D" parent="."]
@@ -147,11 +165,11 @@ target_position = Vector2(-17, 0)
 position = Vector2(19, 10)
 target_position = Vector2(17, 0)
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
-root_node = NodePath("../AnimationPlayer")
-tree_root = SubResource("AnimationNodeStateMachine_3lnip")
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_1htx0")
 }
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_7hjpp")
+anim_player = NodePath("../AnimationPlayer")
