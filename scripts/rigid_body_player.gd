@@ -19,16 +19,25 @@ extends RigidBody2D
 @onready var left_ray_wall: RayCast2D = $left_ray_wall
 @onready var right_ray_wall: RayCast2D = $right_ray_wall
 @onready var grab_timer: Timer = $GrabTimer
+@onready var animation_tree: AnimationTree = $AnimationTree
 
 var actions := {
 	"right": "",
 	"left": "",
 	"up": "",
-	"grab": ""
+	"grab": "",
+	"crouch": ""
 }
 
 var state_machine: StateMachine
 var current_state: State
+
+enum {
+	IDLE,
+	MOVE,
+	CROUCH,
+	WALL_GRAB
+}
 
 func _ready() -> void:
 	setup_grab_timer()
@@ -52,17 +61,17 @@ func setup_actions() -> void:
 		"right": "Right player " + player_suffix,
 		"left": "Left player " + player_suffix,
 		"up": "Up player " + player_suffix,
-		"grab": "Grab wall " + player_suffix
+		"grab": "Grab wall " + player_suffix,
+		"crouch": "Down player " + player_suffix
 	}
 
 func setup_state_machine() -> void:
 	state_machine = StateMachine.new(self)
-	state_machine.add_state("normal", NormalState.new())
-	state_machine.add_state("wall_grab", WallGrabState.new())
-	state_machine.set_state("normal")
-	
-#func is_on_floor() -> bool:
-	#return ray_left_foot.is_colliding() or ray_right_foot.is_colliding()
+	state_machine.add_state(IDLE, IdleState.new())
+	state_machine.add_state(MOVE, MoveState.new())
+	state_machine.add_state(CROUCH, CrouchState.new())
+	state_machine.add_state(WALL_GRAB, WallGrabState.new())
+	state_machine.set_state(IDLE)
 
 func is_on_wall() -> bool:
 	return left_ray_wall.is_colliding() or right_ray_wall.is_colliding()
@@ -75,11 +84,11 @@ class StateMachine:
 	func _init(_player: RigidBody2D) -> void:
 		player = _player
 
-	func add_state(name: String, state: State) -> void:
+	func add_state(name: int, state: State) -> void:
 		states[name] = state
 		state.player = player
 
-	func set_state(name: String) -> void:
+	func set_state(name: int) -> void:
 		if current_state:
 			current_state.exit()
 		current_state = states[name]
@@ -98,7 +107,7 @@ class State:
 	func update(state: PhysicsDirectBodyState2D) -> void:
 		pass
 
-class NormalState extends State:
+class IdleState extends State:
 	func update(state: PhysicsDirectBodyState2D) -> void:
 		handle_movement(state)
 		check_for_wall_grab(state)
@@ -115,7 +124,34 @@ class NormalState extends State:
 
 	func check_for_wall_grab(state: PhysicsDirectBodyState2D) -> void:
 		if (player.left_ray_wall.is_colliding() or player.right_ray_wall.is_colliding()) and Input.is_action_just_pressed(player.actions["grab"]):
-			player.state_machine.set_state("wall_grab")
+			player.state_machine.set_state(WALL_GRAB)
+
+class MoveState extends IdleState:
+	func update(state: PhysicsDirectBodyState2D) -> void:
+		handle_movement(state)
+		check_for_wall_grab(state)
+		animate_movement(state)
+
+	func animate_movement(state: PhysicsDirectBodyState2D) -> void:
+		if state.linear_velocity.x > 0:
+			player.animation_tree.set("parameters/animation/animation", "Run Right")
+		elif state.linear_velocity.x < 0:
+			player.animation_tree.set("parameters/animation/animation", "Run Left")
+		else:
+			player.animation_tree.set("parameters/animation/animation", "Idle")
+
+class CrouchState extends State:
+	func enter() -> void:
+		player.mass = 100
+		player.animation_tree.set("parameters/animation/animation", "Crouch")
+
+	func update(state: PhysicsDirectBodyState2D) -> void:
+		if not Input.is_action_pressed(player.actions["crouch"]):
+			player.state_machine.set_state(MOVE)
+	
+	func exit() -> void:
+		player.mass = 1
+		player.animation_tree.set("parameters/animation/animation", "Idle")
 
 class WallGrabState extends State:
 	var grab_position: Vector2
@@ -123,13 +159,14 @@ class WallGrabState extends State:
 	func enter() -> void:
 		grab_position = player.global_position
 		player.grab_timer.start()
+		player.animation_tree.set("parameters/animation/animation", "Wall Grab")
 
 	func update(state: PhysicsDirectBodyState2D) -> void:
 		if player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding() or not player.is_on_wall():
-			player.state_machine.set_state("normal")
+			player.state_machine.set_state(IDLE)
 			return
 		if not player.is_on_wall():
-			player.state_machine.set_state("normal")
+			player.state_machine.set_state(IDLE)
 			return
 		state.transform.origin = grab_position
 		state.linear_velocity = Vector2.ZERO
@@ -138,9 +175,10 @@ class WallGrabState extends State:
 		grab_position += player.sliding_force * state.step
 		
 		if not Input.is_action_pressed(player.actions["grab"]) or player.grab_timer.is_stopped():
-			player.state_machine.set_state("normal")
+			player.state_machine.set_state(IDLE)
 
 	func exit() -> void:
 		grab_position = Vector2.ZERO
 		player.linear_velocity = Vector2.ZERO
 		player.angular_velocity = 0
+		player.animation_tree.set("parameters/animation/animation", "Idle")
