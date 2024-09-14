@@ -1,3 +1,26 @@
-[gd_scene format=3 uid="uid://pgbi547pxmhc"]
+[gd_scene load_steps=7 format=3 uid="uid://pgbi547pxmhc"]
+
+[ext_resource type="Script" path="res://scripts/state_machine.gd" id="1_x882j"]
+[ext_resource type="Script" path="res://scripts/state.gd" id="2_ryail"]
+[ext_resource type="Script" path="res://scripts/idle.gd" id="3_ygte3"]
+[ext_resource type="Script" path="res://scripts/move.gd" id="4_mvc00"]
+[ext_resource type="Script" path="res://scripts/grab.gd" id="5_d0eyw"]
+[ext_resource type="Script" path="res://scripts/crouch.gd" id="5_va8bd"]
 
 [node name="StateMachine" type="Node2D"]
+script = ExtResource("1_x882j")
+
+[node name="State" type="Node2D" parent="."]
+script = ExtResource("2_ryail")
+
+[node name="Idle" type="Node2D" parent="State"]
+script = ExtResource("3_ygte3")
+
+[node name="Move" type="Node2D" parent="State"]
+script = ExtResource("4_mvc00")
+
+[node name="Grab" type="Node2D" parent="State"]
+script = ExtResource("5_d0eyw")
+
+[node name="Crouch" type="Node2D" parent="State"]
+script = ExtResource("5_va8bd")

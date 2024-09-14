@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://b7imrqewnp7hg"]
+[gd_scene load_steps=17 format=3 uid="uid://b7imrqewnp7hg"]
 
 [ext_resource type="Script" path="res://scripts/rigid_body_player.gd" id="1_btjq7"]
 [ext_resource type="Texture2D" uid="uid://cm0i7txdgsal5" path="res://assets/character/atlas.png" id="2_7btjw"]
+[ext_resource type="PackedScene" uid="uid://pgbi547pxmhc" path="res://scences/state_machine.tscn" id="3_opxf1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4yvn6"]
 radius = 21.0
@@ -173,3 +174,6 @@ libraries = {
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_7hjpp")
 anim_player = NodePath("../AnimationPlayer")
+
+[node name="StateMachine" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_opxf1")]
+player = NodePath("..")
