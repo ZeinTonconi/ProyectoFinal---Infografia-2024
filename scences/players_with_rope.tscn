@@ -22,6 +22,7 @@ drag_left_margin = 0.3
 drag_top_margin = 0.3
 drag_right_margin = 0.3
 drag_bottom_margin = 0.04
+editor_draw_limits = true
 editor_draw_drag_margin = true
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="RigidPlayer/Camera2D"]
