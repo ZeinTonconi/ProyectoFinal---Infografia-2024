@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://b7imrqewnp7hg"]
+[gd_scene load_steps=46 format=3 uid="uid://b7imrqewnp7hg"]
 
 [ext_resource type="Script" path="res://scripts/rigid_body_player.gd" id="1_btjq7"]
 [ext_resource type="Texture2D" uid="uid://cm0i7txdgsal5" path="res://assets/character/atlas.png" id="2_7btjw"]
@@ -268,6 +268,14 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ivykt"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hhg03"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u28v0"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y21f1"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kvo2i"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7hjpp"]
 states/Crouch/node = SubResource("AnimationNodeAnimation_pg50v")
 states/Crouch/position = Vector2(310, 38)
@@ -282,7 +290,7 @@ states/Pulling/position = Vector2(444, 255)
 states/Run/node = SubResource("AnimationNodeAnimation_nxbr0")
 states/Run/position = Vector2(519, 57)
 states/Start/position = Vector2(203, 149)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_58k8a"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_mjf0w"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_lpi7q"), "Run", "Crouch", SubResource("AnimationNodeStateMachineTransition_4o31j"), "Crouch", "Run", SubResource("AnimationNodeStateMachineTransition_lh3q1"), "Crouch", "Idle", SubResource("AnimationNodeStateMachineTransition_2l2wp"), "Idle", "Crouch", SubResource("AnimationNodeStateMachineTransition_pxjj4"), "Run", "Jump", SubResource("AnimationNodeStateMachineTransition_kuu0r"), "Jump", "Idle", SubResource("AnimationNodeStateMachineTransition_buylr"), "Jump", "Run", SubResource("AnimationNodeStateMachineTransition_ncikk"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_4qxx8"), "Idle", "Pulling", SubResource("AnimationNodeStateMachineTransition_t1kpa"), "Pulling", "Idle", SubResource("AnimationNodeStateMachineTransition_uynv4"), "Jump", "Grab", SubResource("AnimationNodeStateMachineTransition_u3rt7"), "Grab", "Jump", SubResource("AnimationNodeStateMachineTransition_ivykt")]
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_58k8a"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_mjf0w"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_lpi7q"), "Run", "Crouch", SubResource("AnimationNodeStateMachineTransition_4o31j"), "Crouch", "Run", SubResource("AnimationNodeStateMachineTransition_lh3q1"), "Crouch", "Idle", SubResource("AnimationNodeStateMachineTransition_2l2wp"), "Idle", "Crouch", SubResource("AnimationNodeStateMachineTransition_pxjj4"), "Run", "Jump", SubResource("AnimationNodeStateMachineTransition_kuu0r"), "Jump", "Idle", SubResource("AnimationNodeStateMachineTransition_buylr"), "Jump", "Run", SubResource("AnimationNodeStateMachineTransition_ncikk"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_4qxx8"), "Idle", "Pulling", SubResource("AnimationNodeStateMachineTransition_t1kpa"), "Pulling", "Idle", SubResource("AnimationNodeStateMachineTransition_uynv4"), "Jump", "Grab", SubResource("AnimationNodeStateMachineTransition_u3rt7"), "Grab", "Jump", SubResource("AnimationNodeStateMachineTransition_ivykt"), "Jump", "Pulling", SubResource("AnimationNodeStateMachineTransition_hhg03"), "Pulling", "Jump", SubResource("AnimationNodeStateMachineTransition_u28v0"), "Run", "Grab", SubResource("AnimationNodeStateMachineTransition_y21f1"), "Grab", "Run", SubResource("AnimationNodeStateMachineTransition_kvo2i")]
 graph_offset = Vector2(0, 41.9508)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e4wgb"]
