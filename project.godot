@@ -15,6 +15,10 @@ run/main_scene="res://scences/damped_spring_joint.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+MusicBackground="*res://scences/musicBackground.tscn"
+
 [global_group]
 
 Player=""
