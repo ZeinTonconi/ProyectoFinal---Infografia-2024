@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://b7imrqewnp7hg"]
+[gd_scene load_steps=42 format=3 uid="uid://b7imrqewnp7hg"]
 
 [ext_resource type="Script" path="res://scripts/rigid_body_player.gd" id="1_btjq7"]
 [ext_resource type="Texture2D" uid="uid://cm0i7txdgsal5" path="res://assets/character/atlas.png" id="2_7btjw"]
@@ -288,6 +288,12 @@ graph_offset = Vector2(0, 41.9508)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e4wgb"]
 size = Vector2(21, 5.75)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_55jgm"]
+size = Vector2(7, 29)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kbwtw"]
+size = Vector2(8, 29)
+
 [node name="RigidPlayer" type="RigidBody2D"]
 collision_layer = 2
 lock_rotation = true
@@ -309,6 +315,7 @@ shape = SubResource("CapsuleShape2D_drcdl")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(-1, -13)
 shape = SubResource("SegmentShape2D_gux0e")
+disabled = true
 one_way_collision = true
 debug_color = Color(0, 0.647103, 0.220133, 0.42)
 
@@ -339,5 +346,19 @@ player = NodePath("..")
 position = Vector2(-3.5, 22.125)
 shape = SubResource("RectangleShape2D_e4wgb")
 debug_color = Color(0.993573, 0, 0.235557, 0.42)
+
+[node name="left_wall_area" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="left_wall_area"]
+position = Vector2(11, 5)
+shape = SubResource("RectangleShape2D_55jgm")
+debug_color = Color(0.47352, 0.440444, 1, 0.42)
+
+[node name="right_wall_area" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="right_wall_area"]
+position = Vector2(-16, 4.5)
+shape = SubResource("RectangleShape2D_kbwtw")
+debug_color = Color(0.164016, 0.517362, 1, 0.42)
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

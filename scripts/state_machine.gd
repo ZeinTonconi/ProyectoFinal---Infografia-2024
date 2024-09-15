@@ -42,8 +42,8 @@ func add_state(name: int, state: State) -> void:
 	state.player = player
 
 func set_state(name: int) -> void:
-	#if current_state:
-		#current_state.exit()
+	if current_state:
+		current_state.exit()
 	current_state = states[name]
 	player.current_state = current_state
 	current_state.enter()

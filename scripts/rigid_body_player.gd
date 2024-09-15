@@ -5,7 +5,7 @@ extends RigidBody2D
 @export var move_left_force := Vector2(-50, 0)
 @export var move_speed_max := 200.0
 @export var jump_force := Vector2(0, -250)
-@export var pull_force = 30
+@export var pull_force = 33
 
 @export_category("Wall Grab")
 @export var grab_force := 100.0
@@ -24,6 +24,8 @@ extends RigidBody2D
 @onready var animation_tree: AnimationTree = $AnimationTree
 @onready var state_animation = $AnimationTree.get("parameters/playback")
 @onready var state_machine: Node2D = $StateMachine
+@onready var left_wall_area: Area2D = $left_wall_area
+@onready var right_wall_area: Area2D = $right_wall_area
 
 var actions := {
 	"right": "",
@@ -36,7 +38,7 @@ var actions := {
 
 var current_state: State
 
-var is_crouch = false
+var is_hook = false
 
 func _ready() -> void:
 	setup_grab_timer()
@@ -69,7 +71,7 @@ func setup_state_machine() -> void:
 	state_machine.init_states()
 
 func is_on_wall() -> bool:
-	return left_ray_wall.is_colliding() or right_ray_wall.is_colliding()
+	return left_wall_area.has_overlapping_bodies() or right_wall_area.has_overlapping_bodies()
 
 func pull_other_player():
 	other_player.pull_me(global_position)

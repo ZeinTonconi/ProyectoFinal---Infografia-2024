@@ -28,9 +28,9 @@ func check_for_wall_grab(state: PhysicsDirectBodyState2D) -> void:
 	if player.is_on_wall() and Input.is_action_just_pressed(player.actions["grab"]):
 		state_machine.set_state(WALL_GRAB)
 	else:
-		if player.left_ray_wall.is_colliding():
+		if player.left_wall_area.has_overlapping_bodies():
 			state.linear_velocity.x = max(0, state.linear_velocity.x)
-		if player.right_ray_wall.is_colliding():
+		if player.right_wall_area.has_overlapping_bodies():
 			state.linear_velocity.x = min(0, state.linear_velocity.x)
 	
 
