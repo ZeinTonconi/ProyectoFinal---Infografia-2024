@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://wn8y3lxb66co"]
 
-[ext_resource type="AudioStream" uid="uid://bsor0tmfq6vg4" path="res://music/Coin-Op-Chaos.mp3" id="1_w7e83"]
+[ext_resource type="AudioStream" uid="uid://troucu486wvc" path="res://music/Coin-Op-Chaos_Looping.mp3" id="1_jnk2f"]
 
 [node name="musicBackground" type="AudioStreamPlayer2D"]
-stream = ExtResource("1_w7e83")
+stream = ExtResource("1_jnk2f")
 volume_db = -7.0
 autoplay = true

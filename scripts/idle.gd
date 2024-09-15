@@ -15,11 +15,10 @@ func handle_movement(state: PhysicsDirectBodyState2D) -> void:
 		state_machine.set_state(CROUCH)
 		
 	if Input.is_action_pressed(player.actions["pull"]):
-		print("PULL")
 		state_machine.set_state(PULL)
 
 func check_for_wall_grab(state: PhysicsDirectBodyState2D) -> void:
-	if (player.left_ray_wall.is_colliding() or player.right_ray_wall.is_colliding()) and Input.is_action_just_pressed(player.actions["grab"]):
+	if player.is_on_wall() and Input.is_action_just_pressed(player.actions["grab"]):
 		state_machine.set_state(WALL_GRAB)
 
 func animate_movement():

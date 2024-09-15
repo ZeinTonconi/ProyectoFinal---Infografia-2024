@@ -6,6 +6,7 @@ func enter() -> void:
 	grab_position = player.global_position
 	player.grab_timer.start()
 	player.state_animation.travel("Grab")
+	player.is_hook = true
 
 func update(state: PhysicsDirectBodyState2D) -> void:
 	
@@ -29,4 +30,5 @@ func exit() -> void:
 	grab_position = Vector2.ZERO
 	player.linear_velocity = Vector2.ZERO
 	player.angular_velocity = 0
-	player.state_animtaion.travel("Jump")
+	player.state_animation.travel("Jump")
+	player.is_hook = false

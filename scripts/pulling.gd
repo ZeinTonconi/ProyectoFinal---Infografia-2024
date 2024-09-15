@@ -6,7 +6,7 @@ func update(state) -> void:
 	
 func handle_input(state) -> void:
 	if Input.is_action_pressed(player.actions["pull"]):
-		if player.other_player.is_crouch:
+		if player.other_player.is_hook:
 			player.pull_me(player.other_player.global_position)
 		else:
 			player.pull_other_player()
