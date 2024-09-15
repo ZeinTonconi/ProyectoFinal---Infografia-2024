@@ -16,15 +16,20 @@ func handle_movement(state: PhysicsDirectBodyState2D) -> void:
 	if Input.is_action_pressed(player.actions["right"]) and state.linear_velocity.x < player.move_speed_max:
 		state.apply_central_impulse(player.move_right_force)
 		
-	if Input.is_action_just_pressed(player.actions["up"]) and (player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding()):
+	if Input.is_action_just_pressed(player.actions["up"]) and player.is_on_floor():
 		state_machine.set_state(JUMP)
 	
 	if Input.is_action_just_pressed(player.actions["crouch"]):
 		state_machine.set_state(CROUCH)
 
 func check_for_wall_grab(state: PhysicsDirectBodyState2D) -> void:
-	if (player.left_ray_wall.is_colliding() or player.right_ray_wall.is_colliding()) and Input.is_action_just_pressed(player.actions["grab"]):
+	if player.is_on_wall() and Input.is_action_just_pressed(player.actions["grab"]):
 		state_machine.set_state(WALL_GRAB)
+	else:
+		if player.left_ray_wall.is_colliding():
+			state.linear_velocity.x = max(0, state.linear_velocity.x)
+		if player.right_ray_wall.is_colliding():
+			state.linear_velocity.x = min(0, state.linear_velocity.x)
 
 func animate_movement(state: PhysicsDirectBodyState2D) -> void:
 	if state.linear_velocity.x > 0:

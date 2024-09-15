@@ -3,6 +3,7 @@ extends State
 func enter() -> void:
 	player.mass = 200
 	player.state_animation.travel("Crouch")
+	player.is_crouch = true
 
 func update(state: PhysicsDirectBodyState2D) -> void:
 	player.state_animation.travel("Crouch")
@@ -13,3 +14,4 @@ func update(state: PhysicsDirectBodyState2D) -> void:
 func exit() -> void:
 	player.mass = 1
 	player.state_animation.travel("Idle")
+	player.is_crouch = false

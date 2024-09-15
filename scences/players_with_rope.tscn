@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://ch11vuksm5y5o"]
+[gd_scene load_steps=8 format=3 uid="uid://ch11vuksm5y5o"]
 
 [ext_resource type="PackedScene" uid="uid://bi3xn1sksxo8d" path="res://scences/Rope.tscn" id="1_ca4ro"]
 [ext_resource type="PackedScene" uid="uid://b7imrqewnp7hg" path="res://scences/rigid_player.tscn" id="1_p3unc"]
 [ext_resource type="Texture2D" uid="uid://0hcpk4afdemi" path="res://assets/Background/Background.png" id="2_8ccma"]
 [ext_resource type="Texture2D" uid="uid://bs3m4p7uspmgw" path="res://assets/Background/Middleground.png" id="3_1j7jy"]
 [ext_resource type="Texture2D" uid="uid://cc44xoswro4ny" path="res://assets/Background/Extension_blue.png" id="4_wusbb"]
+[ext_resource type="Shader" path="res://shaders/second_player.gdshader" id="5_yi5nb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vsugr"]
+shader = ExtResource("5_yi5nb")
 
 [node name="PlayersRope" type="Node2D"]
 scale = Vector2(0.5, 0.5)
@@ -14,6 +18,7 @@ other_player = NodePath("../RigidPlayer2")
 
 [node name="Camera2D" type="Camera2D" parent="RigidPlayer"]
 position = Vector2(200, 26)
+offset = Vector2(-100, 0)
 zoom = Vector2(1.5, 1.5)
 limit_left = 1
 drag_horizontal_enabled = true
@@ -72,6 +77,9 @@ position = Vector2(-1, -100)
 isPlayer1 = false
 other_player = NodePath("../RigidPlayer")
 
+[node name="Sprite2D" parent="RigidPlayer2" index="0"]
+material = SubResource("ShaderMaterial_vsugr")
+
 [node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="."]
 position = Vector2(0, -100)
 node_a = NodePath("../RigidPlayer2")
@@ -89,4 +97,5 @@ node_a = NodePath("../../RigidPlayer2")
 [node name="PinJoint2DPlayer2" parent="Rope" index="12"]
 node_a = NodePath("../../RigidPlayer")
 
+[editable path="RigidPlayer2"]
 [editable path="Rope"]
