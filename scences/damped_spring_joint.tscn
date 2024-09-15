@@ -35,7 +35,7 @@ tile_map_data = PackedByteArray("AAAbACcAAAADAAEAAAAaACcAAAABAAEAAAAZACcAAAADAAE
 tile_set = ExtResource("1_cbmmp")
 
 [node name="PlayersRope" parent="." instance=ExtResource("3_8j43c")]
-position = Vector2(780, 151)
+position = Vector2(393, 592)
 script = ExtResource("3_3kxmt")
 
 [node name="Area2D" type="Area2D" parent="."]
