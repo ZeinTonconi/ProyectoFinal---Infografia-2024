@@ -18,7 +18,7 @@ func handle_movement(state: PhysicsDirectBodyState2D) -> void:
 		state_machine.set_state(PULL)
 
 func check_for_wall_grab(state: PhysicsDirectBodyState2D) -> void:
-	if player.is_on_wall() and Input.is_action_just_pressed(player.actions["grab"]):
+	if player.is_on_wall() and Input.is_action_pressed(player.actions["grab"]):
 		state_machine.set_state(WALL_GRAB)
 
 func animate_movement():
