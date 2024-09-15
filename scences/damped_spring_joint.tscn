@@ -1,9 +1,31 @@
-[gd_scene load_steps=3 format=4 uid="uid://daxrahlubjrhq"]
+[gd_scene load_steps=5 format=4 uid="uid://daxrahlubjrhq"]
 
 [ext_resource type="TileSet" uid="uid://c0ktkeunbgx5f" path="res://assets/Texture/Level1/Level.tres" id="1_cbmmp"]
+[ext_resource type="Script" path="res://scripts/playersRopeNode.gd" id="3_3kxmt"]
 [ext_resource type="PackedScene" uid="uid://ch11vuksm5y5o" path="res://scences/players_with_rope.tscn" id="3_8j43c"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_olo1p"]
+size = Vector2(97, 112)
+
 [node name="Node2D" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="WIN" type="Label" parent="CanvasLayer"]
+visible = false
+anchors_preset = -1
+anchor_left = 0.059
+anchor_top = -0.497
+anchor_right = 1.431
+anchor_bottom = 0.083
+offset_left = 19.032
+offset_top = 502.056
+offset_right = -538.512
+offset_bottom = 399.216
+theme_override_font_sizes/font_size = 200
+text = "Ganaste!!!!"
+vertical_alignment = 1
+clip_text = true
 
 [node name="TileMap" type="TileMap" parent="."]
 format = 2
@@ -13,4 +35,17 @@ tile_map_data = PackedByteArray("AAAbACcAAAADAAEAAAAaACcAAAABAAEAAAAZACcAAAADAAE
 tile_set = ExtResource("1_cbmmp")
 
 [node name="PlayersRope" parent="." instance=ExtResource("3_8j43c")]
-position = Vector2(202, 599)
+position = Vector2(377, 587)
+script = ExtResource("3_3kxmt")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(1441, -135)
+collision_layer = 2
+collision_mask = 2
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-1, -1)
+shape = SubResource("RectangleShape2D_olo1p")
+
+[connection signal="body_entered" from="Area2D" to="PlayersRope" method="_on_area_2d_body_entered"]
