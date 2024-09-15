@@ -1,7 +1,7 @@
 extends State
 
 var onAir = false
-
+	
 func update(state: PhysicsDirectBodyState2D) -> void:
 	handle_movement(state)
 	check_for_wall_grab(state)
@@ -15,17 +15,17 @@ func handle_movement(state: PhysicsDirectBodyState2D) -> void:
 	if Input.is_action_pressed(player.actions["right"]) and state.linear_velocity.x < player.move_speed_max:
 		state.apply_central_impulse(player.move_right_force)
 	
-	if onAir and (player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding()):
+	if onAir and player.is_on_floor():
 		onAir = false
 		state_machine.set_state(IDLE)
 	
-	if Input.is_action_pressed(player.actions["up"]) and (player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding()):
+	if Input.is_action_pressed(player.actions["up"]) and player.is_on_floor():
 		state.apply_central_impulse(player.jump_force)
 		onAir = true
 		
 
 func check_for_wall_grab(state: PhysicsDirectBodyState2D) -> void:
-	if (player.left_ray_wall.is_colliding() or player.right_ray_wall.is_colliding()) and Input.is_action_just_pressed(player.actions["grab"]):
+	if player.is_on_wall() and Input.is_action_just_pressed(player.actions["grab"]):
 		state_machine.set_state(WALL_GRAB)
 	else:
 		if player.left_ray_wall.is_colliding():

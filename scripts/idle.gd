@@ -8,7 +8,7 @@ func update(state: PhysicsDirectBodyState2D) -> void:
 func handle_movement(state: PhysicsDirectBodyState2D) -> void:
 	if Input.is_action_pressed(player.actions["left"]) or Input.is_action_pressed(player.actions["right"]):
 		state_machine.set_state(MOVE)
-	if Input.is_action_pressed(player.actions["up"]) and (player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding()):
+	if Input.is_action_pressed(player.actions["up"]) and player.is_on_floor():
 		state_machine.set_state(JUMP)
 		
 	if Input.is_action_pressed(player.actions["crouch"]):

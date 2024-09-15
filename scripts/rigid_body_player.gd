@@ -5,7 +5,7 @@ extends RigidBody2D
 @export var move_left_force := Vector2(-50, 0)
 @export var move_speed_max := 200.0
 @export var jump_force := Vector2(0, -250)
-@export var pull_force = 50
+@export var pull_force = 30
 
 @export_category("Wall Grab")
 @export var grab_force := 100.0
@@ -35,6 +35,8 @@ var actions := {
 }
 
 var current_state: State
+
+var is_crouch = false
 
 func _ready() -> void:
 	setup_grab_timer()
@@ -75,3 +77,6 @@ func pull_other_player():
 func pull_me(position):
 	var dir = global_position.direction_to(position)
 	apply_central_impulse(dir*pull_force)
+
+func is_on_floor():
+	return $Area2D.has_overlapping_bodies()

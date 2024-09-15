@@ -10,7 +10,7 @@ func enter() -> void:
 func update(state: PhysicsDirectBodyState2D) -> void:
 	
 	player.state_animation.travel("Grab")
-	if player.ray_left_foot.is_colliding() or player.ray_right_foot.is_colliding() or not player.is_on_wall():
+	if player.is_on_floor() or not player.is_on_wall():
 		player.state_machine.set_state(IDLE)
 		return
 	if not player.is_on_wall():
