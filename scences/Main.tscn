@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://dd4bw41drq5sj"]
+[gd_scene load_steps=5 format=3 uid="uid://cx8onaq5r10do"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_8kj1k"]
 [ext_resource type="PackedScene" uid="uid://ch11vuksm5y5o" path="res://scences/players_with_rope.tscn" id="2_smbsr"]
@@ -6,6 +6,9 @@
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_5sjc1"]
 a = Vector2(167.5, 8)
 b = Vector2(-305.5, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ged1j"]
+size = Vector2(20, 112)
 
 [node name="Main" type="Node2D"]
 position = Vector2(-1, 218)
@@ -21,3 +24,12 @@ position = Vector2(6, 249)
 position = Vector2(340.5, 0)
 shape = SubResource("SegmentShape2D_5sjc1")
 debug_color = Color(0, 0.646292, 0.240567, 0.42)
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(42, 204)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_ged1j")
+debug_color = Color(0.419185, 0.461867, 1, 0.42)

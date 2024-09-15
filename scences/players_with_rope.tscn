@@ -1,28 +1,101 @@
-[gd_scene load_steps=4 format=3 uid="uid://ch11vuksm5y5o"]
+[gd_scene load_steps=8 format=3 uid="uid://ch11vuksm5y5o"]
 
 [ext_resource type="PackedScene" uid="uid://bi3xn1sksxo8d" path="res://scences/Rope.tscn" id="1_ca4ro"]
-[ext_resource type="Script" path="res://scripts/players_with_rope.gd" id="1_w5kb1"]
-[ext_resource type="PackedScene" uid="uid://b3yx4k5u7xex6" path="res://scences/player.tscn" id="2_3hvd7"]
+[ext_resource type="PackedScene" uid="uid://b7imrqewnp7hg" path="res://scences/rigid_player.tscn" id="1_p3unc"]
+[ext_resource type="Texture2D" uid="uid://0hcpk4afdemi" path="res://assets/Background/Background.png" id="2_8ccma"]
+[ext_resource type="Texture2D" uid="uid://bs3m4p7uspmgw" path="res://assets/Background/Middleground.png" id="3_1j7jy"]
+[ext_resource type="Texture2D" uid="uid://cc44xoswro4ny" path="res://assets/Background/Extension_blue.png" id="4_wusbb"]
+[ext_resource type="Shader" path="res://shaders/second_player.gdshader" id="5_yi5nb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vsugr"]
+shader = ExtResource("5_yi5nb")
 
 [node name="PlayersRope" type="Node2D"]
-script = ExtResource("1_w5kb1")
+scale = Vector2(0.5, 0.5)
+
+[node name="RigidPlayer" parent="." node_paths=PackedStringArray("other_player") instance=ExtResource("1_p3unc")]
+other_player = NodePath("../RigidPlayer2")
+
+[node name="Camera2D" type="Camera2D" parent="RigidPlayer"]
+position = Vector2(200, 26)
+offset = Vector2(-100, 0)
+zoom = Vector2(1.5, 1.5)
+limit_left = 1
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.3
+drag_top_margin = 0.3
+drag_right_margin = 0.3
+drag_bottom_margin = 0.04
+editor_draw_limits = true
+editor_draw_drag_margin = true
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="RigidPlayer/Camera2D"]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="RigidPlayer/Camera2D/ParallaxBackground"]
+motion_scale = Vector2(0.1, 1)
+motion_mirroring = Vector2(768, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidPlayer/Camera2D/ParallaxBackground/ParallaxLayer"]
+position = Vector2(1, 271)
+scale = Vector2(2, 2)
+texture = ExtResource("2_8ccma")
+centered = false
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="RigidPlayer/Camera2D/ParallaxBackground"]
+motion_scale = Vector2(0.4, 1)
+motion_mirroring = Vector2(768, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidPlayer/Camera2D/ParallaxBackground/ParallaxLayer2"]
+position = Vector2(3, 271)
+scale = Vector2(2, 2)
+texture = ExtResource("3_1j7jy")
+centered = false
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="RigidPlayer/Camera2D/ParallaxBackground"]
+motion_scale = Vector2(0.1, 1)
+motion_mirroring = Vector2(768, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidPlayer/Camera2D/ParallaxBackground/ParallaxLayer3"]
+position = Vector2(-3, -160)
+scale = Vector2(2, 2)
+texture = ExtResource("4_wusbb")
+centered = false
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="RigidPlayer/Camera2D/ParallaxBackground"]
+motion_scale = Vector2(0.1, 1)
+motion_mirroring = Vector2(768, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidPlayer/Camera2D/ParallaxBackground/ParallaxLayer4"]
+position = Vector2(1, -590)
+scale = Vector2(2, 2)
+texture = ExtResource("4_wusbb")
+centered = false
+
+[node name="RigidPlayer2" parent="." node_paths=PackedStringArray("other_player") instance=ExtResource("1_p3unc")]
+position = Vector2(-1, -100)
+isPlayer1 = false
+other_player = NodePath("../RigidPlayer")
+
+[node name="Sprite2D" parent="RigidPlayer2" index="0"]
+material = SubResource("ShaderMaterial_vsugr")
+
+[node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="."]
+position = Vector2(0, -100)
+node_a = NodePath("../RigidPlayer2")
+node_b = NodePath("../RigidPlayer")
+length = 100.0
+stiffness = 15.0
 
 [node name="Rope" parent="." instance=ExtResource("1_ca4ro")]
+position = Vector2(0, -50)
+rotation = 1.5708
 
 [node name="PinJoint2DPlayer1" parent="Rope" index="11"]
-node_a = NodePath("../../Player1")
+node_a = NodePath("../../RigidPlayer2")
 
 [node name="PinJoint2DPlayer2" parent="Rope" index="12"]
-node_a = NodePath("../../Player2")
+node_a = NodePath("../../RigidPlayer")
 
-[node name="Player1" parent="." instance=ExtResource("2_3hvd7")]
-position = Vector2(-38, -3)
-
-[node name="Player2" parent="." instance=ExtResource("2_3hvd7")]
-position = Vector2(42, -3)
-isPlayer1 = false
-
-[connection signal="pull_player1" from="." to="Player1" method="_on_players_rope_pull_player_1"]
-[connection signal="pull_both_players" from="Rope" to="." method="_on_rope_pull_both_players"]
-
+[editable path="RigidPlayer2"]
 [editable path="Rope"]

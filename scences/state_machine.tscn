@@ -1,0 +1,34 @@
+[gd_scene load_steps=9 format=3 uid="uid://pgbi547pxmhc"]
+
+[ext_resource type="Script" path="res://scripts/state_machine.gd" id="1_x882j"]
+[ext_resource type="Script" path="res://scripts/state.gd" id="2_ryail"]
+[ext_resource type="Script" path="res://scripts/idle.gd" id="3_ygte3"]
+[ext_resource type="Script" path="res://scripts/move.gd" id="4_mvc00"]
+[ext_resource type="Script" path="res://scripts/grab.gd" id="5_d0eyw"]
+[ext_resource type="Script" path="res://scripts/crouch.gd" id="5_va8bd"]
+[ext_resource type="Script" path="res://scripts/jump.gd" id="7_h0n76"]
+[ext_resource type="Script" path="res://scripts/pulling.gd" id="8_nre8c"]
+
+[node name="StateMachine" type="Node2D"]
+script = ExtResource("1_x882j")
+
+[node name="Idle" type="Node2D" parent="."]
+script = ExtResource("3_ygte3")
+
+[node name="Move" type="Node2D" parent="."]
+script = ExtResource("4_mvc00")
+
+[node name="Grab" type="Node2D" parent="."]
+script = ExtResource("5_d0eyw")
+
+[node name="Crouch" type="Node2D" parent="."]
+script = ExtResource("5_va8bd")
+
+[node name="State" type="Node2D" parent="."]
+script = ExtResource("2_ryail")
+
+[node name="Jump" type="Node2D" parent="."]
+script = ExtResource("7_h0n76")
+
+[node name="Pulling" type="Node2D" parent="."]
+script = ExtResource("8_nre8c")

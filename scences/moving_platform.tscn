@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=3 uid="uid://ngkoiqje3rnv"]
+
+[ext_resource type="Texture2D" uid="uid://dlvoykw1cp8uv" path="res://assets/Texture/Level1/moving_platform.png" id="1_eeoav"]
+[ext_resource type="Script" path="res://scripts/moving_platform.gd" id="1_p6mbv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uge26"]
+size = Vector2(187.5, 17.5)
+
+[sub_resource type="Animation" id="Animation_pjdxc"]
+resource_name = "Move"
+length = 0.8
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(10, 0), Vector2(20, 0), Vector2(30, 0), Vector2(40, 0), Vector2(30, 0), Vector2(20, 0), Vector2(10, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_p3qth"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4jhyw"]
+_data = {
+"Move": SubResource("Animation_pjdxc"),
+"RESET": SubResource("Animation_p3qth")
+}
+
+[node name="MovingPlatform" type="AnimatableBody2D"]
+scale = Vector2(0.1, 0.1)
+script = ExtResource("1_p6mbv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.75, 13.75)
+shape = SubResource("RectangleShape2D_uge26")
+one_way_collision = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 0, 0.486275)
+scale = Vector2(0.3, 0.0960833)
+texture = ExtResource("1_eeoav")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4jhyw")
+}

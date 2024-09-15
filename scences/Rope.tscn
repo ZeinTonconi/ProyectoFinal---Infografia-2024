@@ -1,18 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://bi3xn1sksxo8d"]
+[gd_scene load_steps=3 format=3 uid="uid://bi3xn1sksxo8d"]
 
 [ext_resource type="Texture2D" uid="uid://cpd7bcutv5xnb" path="res://assets/Objects/Ropee.png" id="1_q5pwm"]
-[ext_resource type="Script" path="res://scripts/rope.gd" id="1_us267"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jfv2e"]
 size = Vector2(274, 188.75)
 
 [node name="Rope" type="Node2D"]
-script = ExtResource("1_us267")
 
 [node name="Rope1" type="RigidBody2D" parent="."]
 position = Vector2(-32, 1)
 collision_layer = 0
 collision_mask = 0
+mass = 0.001
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Rope1"]
@@ -34,6 +33,7 @@ node_b = NodePath("../Rope2")
 position = Vector2(-19, 1)
 collision_layer = 0
 collision_mask = 0
+mass = 0.001
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Rope2"]
@@ -55,6 +55,7 @@ node_b = NodePath("../Rope3")
 position = Vector2(-6, 1)
 collision_layer = 0
 collision_mask = 0
+mass = 0.001
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Rope3"]
@@ -76,6 +77,7 @@ node_b = NodePath("../Rope4")
 position = Vector2(7, 1)
 collision_layer = 0
 collision_mask = 0
+mass = 0.001
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Rope4"]
@@ -97,7 +99,7 @@ node_b = NodePath("../Rope5")
 position = Vector2(20, 1)
 collision_layer = 0
 collision_mask = 0
-metadata/_edit_group_ = true
+mass = 0.001
 
 [node name="Sprite2D" type="Sprite2D" parent="Rope5"]
 position = Vector2(-1.90735e-06, 1)
@@ -118,6 +120,7 @@ node_b = NodePath("../Rope6")
 position = Vector2(33, 1)
 collision_layer = 0
 collision_mask = 0
+mass = 0.001
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Rope6"]
@@ -135,5 +138,49 @@ position = Vector2(-38, 1)
 node_b = NodePath("../Rope1")
 
 [node name="PinJoint2DPlayer2" type="PinJoint2D" parent="."]
-position = Vector2(39, 1)
-node_b = NodePath("../Rope6")
+position = Vector2(65, 2)
+node_b = NodePath("../Rope8")
+
+[node name="PinJoint2D6" type="PinJoint2D" parent="."]
+position = Vector2(40, 2)
+node_a = NodePath("../Rope6")
+node_b = NodePath("../Rope7")
+
+[node name="Rope7" type="RigidBody2D" parent="."]
+position = Vector2(46, 1)
+collision_layer = 0
+collision_mask = 0
+mass = 0.001
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Rope7"]
+position = Vector2(-1.90735e-06, 1)
+scale = Vector2(0.0383753, 0.075)
+texture = ExtResource("1_q5pwm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rope7"]
+position = Vector2(-1.49012e-08, 2.98023e-08)
+scale = Vector2(0.05, 0.05)
+shape = SubResource("RectangleShape2D_jfv2e")
+
+[node name="PinJoint2D7" type="PinJoint2D" parent="."]
+position = Vector2(54, 2)
+node_a = NodePath("../Rope7")
+node_b = NodePath("../Rope8")
+
+[node name="Rope8" type="RigidBody2D" parent="."]
+position = Vector2(59, 1)
+collision_layer = 0
+collision_mask = 0
+mass = 0.001
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Rope8"]
+position = Vector2(-1.90735e-06, 1)
+scale = Vector2(0.0383753, 0.075)
+texture = ExtResource("1_q5pwm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rope8"]
+position = Vector2(-1.49012e-08, 2.98023e-08)
+scale = Vector2(0.05, 0.05)
+shape = SubResource("RectangleShape2D_jfv2e")
