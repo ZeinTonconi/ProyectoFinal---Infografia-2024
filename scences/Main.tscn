@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dd4bw41drq5sj"]
+[gd_scene load_steps=5 format=3 uid="uid://cx8onaq5r10do"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_8kj1k"]
 [ext_resource type="PackedScene" uid="uid://ch11vuksm5y5o" path="res://scences/players_with_rope.tscn" id="2_smbsr"]

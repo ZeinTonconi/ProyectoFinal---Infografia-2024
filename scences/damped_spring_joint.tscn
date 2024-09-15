@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=4 uid="uid://daxrahlubjrhq"]
+[gd_scene load_steps=5 format=4 uid="uid://dcscr14ufmgav"]
 
 [ext_resource type="TileSet" uid="uid://c0ktkeunbgx5f" path="res://assets/Texture/Level1/Level.tres" id="1_cbmmp"]
 [ext_resource type="Script" path="res://scripts/playersRopeNode.gd" id="3_3kxmt"]
