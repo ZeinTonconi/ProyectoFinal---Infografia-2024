@@ -39,6 +39,7 @@ var actions := {
 var current_state: State
 
 var is_hook = false
+var flip = 0
 
 func _ready() -> void:
 	setup_grab_timer()
@@ -47,6 +48,7 @@ func _ready() -> void:
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	current_state.update(state)
+	$Sprite2D.flip_h = flip
 
 func setup_grab_timer() -> void:
 	if not has_node("GrabTimer"):

@@ -12,9 +12,11 @@ func handle_movement(state: PhysicsDirectBodyState2D) -> void:
 		
 	if Input.is_action_pressed(player.actions["left"]) and state.linear_velocity.x > -player.move_speed_max:
 		state.apply_central_impulse(player.move_left_force)
+		player.flip = 1
 		
 	if Input.is_action_pressed(player.actions["right"]) and state.linear_velocity.x < player.move_speed_max:
 		state.apply_central_impulse(player.move_right_force)
+		player.flip = 0
 		
 	if Input.is_action_just_pressed(player.actions["up"]) and player.is_on_floor():
 		state_machine.set_state(JUMP)

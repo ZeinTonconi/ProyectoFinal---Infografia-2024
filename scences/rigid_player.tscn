@@ -294,7 +294,7 @@ transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition
 graph_offset = Vector2(0, 41.9508)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e4wgb"]
-size = Vector2(21, 5.75)
+size = Vector2(23, 5.75)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_55jgm"]
 size = Vector2(7, 29)
@@ -351,7 +351,7 @@ player = NodePath("..")
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-3.5, 22.125)
+position = Vector2(-2.5, 22.125)
 shape = SubResource("RectangleShape2D_e4wgb")
 debug_color = Color(0.993573, 0, 0.235557, 0.42)
 
